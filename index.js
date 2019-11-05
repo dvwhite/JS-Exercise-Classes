@@ -209,37 +209,71 @@ class Student extends Lambdasian {
   }
 
   // Stretch methods
+
+  /**
+   * Return if student qualifies for graduation
+   * @returns {boolean} - If student can graduate given current grade
+   */
   canGraduate() {
     return this.grade > 70 ? true : false;
   }
 
+  /** 
+  * Do some work in a subject and be regraded by this.instructor
+  * @param {string} subject - The subject studied
+  * @param {function} action - A callback taking subject as an argument 
+  */ 
+  submitWork(subject, action) {
+    action.call(this, subject); // Submit some work
+    this.instructor.regrade(this); // Regraded by instructor to potentially increase score
+  }
+
+  /**
+   * Modify the this.status property
+   * @param {string} newStatus -  The new status
+   */
+  setStatus(newStatus) {
+    this.status = newStatus;
+  }
+
+  /**
+   * Get the this.status property
+   * @returns {string} - The current status
+   */
   getStatus() {
+    console.log(this.status)
     return this.status;
   }
 
+  /**
+   * The graduate method updates the status if this.canGraduate() evaluates to true
+   */
   graduate() {
     if (this.canGraduate()) {
-      this.status = `${this.name} graduates from ${this.className}!`;
+      this.setStatus(`${this.name} graduates from ${this.className}!`);
       this.getStatus();
     } else {
       this.studyUntilGraduates();
     }
   }
 
+  /**
+   * If graduate method encounters the else clause, student studies
+   * until s/he meets the graduation requirements
+   */
   studyUntilGraduates() {
     // Study what the instructor specializes in
     const subject = this.instructor.specialty;
 
     // Student continues submitting work until graduation
-    // Due to randomization, this could take a while (no pun intended)...
+    // This could take a while (no pun intended) due to randomization of instructor.regrade
     let studySessions = 0;
     while (!this.canGraduate()) {
       studySessions++;
-      this.PRAssignment(subject); // Submit some interesting work
-      this.instructor.regrade(this); // Regraded by instructor
+      this.submitWork(subject, this.PRAssignment);
     }
-    let studyFrequency = studySessions > 1 ? ("times") : ("time"); // Determine if using plural form of "time"
-    this.status = `${this.name} studied ${studySessions} ${studyFrequency} and is now ready to graduate!`;
+    let studyFrequency = studySessions > 1 ? ("projects") : ("project"); // Determine if using plural form
+    this.setStatus(`${this.name} submitted ${studySessions} ${studyFrequency} and is now ready to graduate!`);
     this.getStatus();
   }
 }
