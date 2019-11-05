@@ -156,11 +156,13 @@ class Instructor extends Lambdasian {
     return `${student.name} receives a perfect score on ${subject}`;
   }
 
+  // Strech method 
   regrade(student) {
     // Randomize grade modifier
-    const randomGradeChange =  (Math.floor((Math.random() * 100)/4 + 1));
+    const randomGradeChange =  (Math.ceil((Math.random() * 100) / (100 / (100 - student.grade)) + 1));
     // Randomize sign
     const signModifier =  Math.random() < 0.5 ? -1 : 1;
+    // Assign random grade modification
     student.grade += (randomGradeChange * signModifier);
   }
 }
@@ -186,7 +188,10 @@ class Student extends Lambdasian {
     this.previousBackground = studentArgs.previousBackground;
     this.className = studentArgs.className;
     this.favSubjects = studentArgs.favSubjects;
-    this.grade = 75;
+    this.grade = 70;
+    // Stretch properties
+    this.instructor = studentArgs.instructor; // Needed to regrade student
+    this.status = `${this.name} is coding...`; // Needed for getStatus
   }
 
   // Methods
@@ -201,6 +206,41 @@ class Student extends Lambdasian {
 
   sprintChallenge(subject) {
     return `${this.name} has begun a sprint challenge on ${subject}`;
+  }
+
+  // Stretch methods
+  canGraduate() {
+    return this.grade > 70 ? true : false;
+  }
+
+  getStatus() {
+    return this.status;
+  }
+
+  graduate() {
+    if (this.canGraduate()) {
+      this.status = `${this.name} graduates from ${this.className}!`;
+      this.getStatus();
+    } else {
+      this.studyUntilGraduates();
+    }
+  }
+
+  studyUntilGraduates() {
+    // Study what the instructor specializes in
+    const subject = this.instructor.specialty;
+
+    // Student continues submitting work until graduation
+    // Due to randomization, this could take a while (no pun intended)...
+    let studySessions = 0;
+    while (!this.canGraduate()) {
+      studySessions++;
+      this.PRAssignment(subject); // Submit some interesting work
+      this.instructor.regrade(this); // Regraded by instructor
+    }
+    let studyFrequency = studySessions > 1 ? ("times") : ("time"); // Determine if using plural form of "time"
+    this.status = `${this.name} studied ${studySessions} ${studyFrequency} and is now ready to graduate!`;
+    this.getStatus();
   }
 }
 
