@@ -49,7 +49,7 @@ class Person {
   // Methods 
   eat(someFood) {
     if (this.stomach.length < 10) {
-      this.stomach.push(someFood)
+      this.stomach.push(someFood);
     }
   }
 
@@ -77,7 +77,27 @@ class Person {
 */
 
 class Car {
-
+  constructor(model, milesPerGallon) {
+    this.model = model;
+    this.milesPerGallon = milesPerGallon;
+    this.tank = 0;
+    this.odometer = 0;
+  }
+  // Methods 
+  fill(gallons) {
+    this.tank += gallons;
+  }
+  
+  drive(distance) {
+    // Distance is assumed to be in miles
+    const drivableDistance = this.tank * this.milesPerGallon;
+    const fuelNeeded = distance / this.milesPerGallon;
+    this.odometer += Math.min(distance, drivableDistance);
+    this.tank = Math.max(this.tank - fuelNeeded, 0)
+    if (this.tank === 0) {
+      return `I ran out of fuel at ${this.odometer} miles!`
+    }
+  }
 }
 
 /*
