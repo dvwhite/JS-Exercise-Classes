@@ -172,27 +172,8 @@ class Instructor extends Lambdasian {
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student extends Lambdasian {
-  constructor (studentArgs) {
-    super(studentArgs);
-    this.previousBackground = studentArgs.previousBackground;
-    this.className = studentArgs.className;
-    this.favSubjects = studentArgs.favSubjects;
-  }
+class Student {
 
-  // Methods
-  listSubjects() {
-    const subjects = this.favSubjects.join(", ");
-    return `Loving ${subjects}!`;
-  }
-
-  PRAssignment(subject) {
-    return `${this.name} has submitted a PR for ${subject}`;
-  }
-
-  sprintChallenge(subject) {
-    `${this.name} has begun a sprint challenge on ${subject}`;
-  }
 }
 
 /*
